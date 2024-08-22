@@ -14,7 +14,7 @@ function handleClick(event) {
 export default function Breadcrumb() {
   return (
     <div role="presentation" onClick={handleClick}>
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs aria-label="breadcrumb" sx={{paddingBottom:2}}>
         <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
