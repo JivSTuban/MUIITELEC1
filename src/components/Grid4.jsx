@@ -34,11 +34,11 @@ const blogcardData = [
 
 const Grid4 = () => {
   const Item = ({ children }) => (
-    <Paper style={{ padding: '20px', textAlign: 'center', width: '100%' }}>{children}</Paper>
+    <Paper style={{ mt: 3, padding: 0, textAlign: 'center', width: '100%' }}>{children}</Paper>
   );
 
   return (
-    <Grid container spacing={{ xs: 4, md: 7 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ mt:20 }}>
+    <Grid container spacing={{ xs: 2, sm:4, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
       {blogcardData.map((card, index) => (
         <Grid item xs={6} sm={4} md={3} key={index}>
           <Item>
