@@ -1,7 +1,7 @@
 import { Container, Grid, Stack } from '@mui/material';
-import React from 'react';
-import MyStack from '../components/MyStack';
+import React, { useState } from 'react';
 import MyButton from '../components/MyButton';
+import MyStack from '../components/MyStack';
 
 const colors = [
   'primary.main',
@@ -15,11 +15,6 @@ const colors = [
   'text.disabled'
 ];
 
-const getRandomColor = () => {
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
-};
-
 const shuffleArray = (array) => {
   let shuffledArray = array.slice(); 
   for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -29,13 +24,35 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-
 const ColorGame = () => {
-  const handleClick = () =>{
-    
-  }
+  const [sequence, setSequence] = useState(shuffleArray(colors).slice(0, 9));
+  const [revealedColors, setRevealedColors] = useState(Array(9).fill('primary.main'));
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const shuffledColors = shuffleArray(colors);
+  const handleClick = (index) => {
+    const newRevealedColors = [...revealedColors];
+    const correctColor = sequence[currentIndex];
+    newRevealedColors[index] = colors[index];
+
+    if (correctColor === newRevealedColors[index]) {
+      setCurrentIndex(currentIndex + 1);
+
+      if (currentIndex + 1 === sequence.length) {
+        setRevealedColors(sequence);
+        setTimeout(() => {
+          alert('You won!');
+          window.location.reload();
+        }, 500);
+      }
+    } else {
+      setCurrentIndex(0);
+      setTimeout(() => {
+        setRevealedColors(Array(9).fill('primary.main'));
+      }, 500);
+    }
+
+    setRevealedColors(newRevealedColors);
+  };
 
   return (
     <Container
@@ -54,22 +71,18 @@ const ColorGame = () => {
         spacing={1}
         sx={{ flexWrap: 'wrap', justifyContent: 'center', marginBottom: 2 }}
       >
-        {shuffledColors.map((color, index) => (
+        {sequence.map((color, index) => (
           <MyStack key={index} bg={color} />
         ))}
       </Stack>
       <Grid container spacing={1}>
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
-
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
-
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
-        <MyButton handleClick={handleClick()} />
+        {revealedColors.map((color, index) => (
+          <MyButton 
+            key={index} 
+            handleClick={() => handleClick(index)} 
+            bgColor={color} 
+          />
+        ))}
       </Grid>
     </Container>
   );
